@@ -1,11 +1,12 @@
-var offsetLeft;
-var offsetTop;
 var canvas;
 var context;
 var rect;
 var graph;
+var mousedownVertex;
+var mouseupVertex;
 var vertexWidth = 12;
 var vertexHeight = 12;
+var makingEdge = false;
 
 var PIXEL_RATIO = (function () {
     var ctx = document.createElement("canvas").getContext("2d"),
@@ -31,40 +32,58 @@ createHiDPICanvas = function(w, h, ratio) {
     return can;
 }
 
+function addListeners() {
+	canvas.addEventListener('mouseup', onMouseUp);
+	canvas.addEventListener('mousedown', onMouseDown);
+}
+
 function onLoad() {
 	graph = new Graph();
 	canvas = createHiDPICanvas(500, 500);
 	document.body.appendChild(canvas);
-	offsetLeft = canvas.offsetLeft;
-	offsetTop = canvas.offsetTop;
-	canvas.addEventListener('click', canvasClick);
+	context = document.getElementById("canvas").getContext("2d");
+	addListeners();
+}
+
+
+function onMouseDown(event) {
+	if (isVertexClicked(event)) {
+		makingEdge = true;
+	}
+}
+
+function onMouseUp(event) {
+	if(!isVertexClicked(event)) {
+		addVertex(event);
+	} else if (isVertexClicked(event) && makingEdge) {
+		addEdge(mousedownVertex, mouseupVertex);
+	}
 }
 
 function isVertexClicked(event) {
 	var pos = getMousePos(event);
 	var inVertex = false;
 	for (x = 0; x < graph.vertices.length; x++) {
-		inVertex = pos.x <= graph.vertices[x].x + 2*vertexWidth &&
-				   pos.x >= graph.vertices[x].x - vertexWidth &&
-				   pos.y <= graph.vertices[x].y + 2*vertexHeight &&
-				   pos.y >= graph.vertices[x].y - vertexHeight;
+		inVertex = pos.x <= graph.vertices[x].pos.x + 2*vertexWidth &&
+				   pos.x >= graph.vertices[x].pos.x - vertexWidth &&
+				   pos.y <= graph.vertices[x].pos.y + 2*vertexHeight &&
+				   pos.y >= graph.vertices[x].pos.y - vertexHeight;
 		if (inVertex) {
+			if (event.type == "mousedown") {
+					mousedownVertex = graph.vertices[x];
+					console.log("down");
+				}
+			if (event.type == "mouseup") {
+				mouseupVertex = graph.vertices[x];
+				console.log("up");
+			}
 			break;
 		}
 	}
 	return inVertex;
 }
 
-function canvasClick(event) {
-	if(isVertexClicked(event)) {
-		//stuff
-	} else {
-		addVertex(event);
-	}
-}
-
 function addVertex(event) {
-	var context = document.getElementById("canvas").getContext("2d");
 	var pos = getMousePos(event);
 	var x = pos.x - vertexWidth/2;
 	var y = pos.y - vertexHeight/2;
@@ -74,6 +93,18 @@ function addVertex(event) {
 		context.drawImage(drawing, x, y);
 	}
 	graph.addVertex({ x: x, y: y});
+}
+
+function addEdge(vertex1, vertex2) {
+	makingEdge = false;
+	var moveToX = vertex1.pos.x + vertexWidth/2;
+	var moveToY = vertex1.pos.y + vertexWidth/2;
+	var lineToX = vertex2.pos.x + vertexWidth/2;
+	var lineToY = vertex2.pos.y + vertexWidth/2;
+	context.beginPath();
+	context.moveTo(moveToX, moveToY);
+	context.lineTo(lineToX, lineToY);
+	context.stroke();
 }
 
 function getMousePos(event) {

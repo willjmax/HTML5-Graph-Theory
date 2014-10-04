@@ -4,7 +4,7 @@ function Graph() {
 }
 
 Graph.prototype.addVertex = function(vertex) {
-	this.vertices.push(vertex);
+	this.vertices[Vertex.count] = new Vertex(vertex);
 }
 
 Graph.prototype.addEdge = function() {
