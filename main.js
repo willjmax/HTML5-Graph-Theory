@@ -1,6 +1,5 @@
 var canvas;
 var context;
-var rect;
 var graph;
 var mousedownVertex;
 var mouseupVertex;
@@ -54,16 +53,18 @@ function onMouseDown(event) {
 
 function onMouseUp(event) {
 	if(!isVertexClicked(event)) {
-		addVertex(event);
+		var pos = getMousePos(event);
+		graph.addVertex(new Vertex({x: pos.x, y: pos.y}));
 	} else if (isVertexClicked(event) && makingEdge) {
-		addEdge(mousedownVertex, mouseupVertex);
+		graph.addEdge(new Edge({vertex1: mousedownVertex, vertex2: mouseupVertex}));
 	}
+	drawGraph();
 }
 
 function isVertexClicked(event) {
 	var pos = getMousePos(event);
 	var inVertex = false;
-	for (x = 0; x < graph.vertices.length; x++) {
+	for (x in graph.vertices) {
 		inVertex = pos.x <= graph.vertices[x].pos.x + 2*vertexWidth &&
 				   pos.x >= graph.vertices[x].pos.x - vertexWidth &&
 				   pos.y <= graph.vertices[x].pos.y + 2*vertexHeight &&
@@ -71,11 +72,9 @@ function isVertexClicked(event) {
 		if (inVertex) {
 			if (event.type == "mousedown") {
 					mousedownVertex = graph.vertices[x];
-					console.log("down");
 				}
 			if (event.type == "mouseup") {
 				mouseupVertex = graph.vertices[x];
-				console.log("up");
 			}
 			break;
 		}
@@ -83,28 +82,38 @@ function isVertexClicked(event) {
 	return inVertex;
 }
 
-function addVertex(event) {
-	var pos = getMousePos(event);
-	var x = pos.x - vertexWidth/2;
-	var y = pos.y - vertexHeight/2;
+function drawVertex(vertex) {
+	var x = vertex.pos.x - vertexWidth/2;
+	var y = vertex.pos.y - vertexHeight/2;
 	var drawing = new Image();
 	drawing.src = "vertex.png";
 	drawing.onload = function() {
 		context.drawImage(drawing, x, y);
 	}
-	graph.addVertex({ x: x, y: y});
 }
 
-function addEdge(vertex1, vertex2) {
+function drawEdge(edge) {
 	makingEdge = false;
-	var moveToX = vertex1.pos.x + vertexWidth/2;
-	var moveToY = vertex1.pos.y + vertexWidth/2;
-	var lineToX = vertex2.pos.x + vertexWidth/2;
-	var lineToY = vertex2.pos.y + vertexWidth/2;
+	console.log(edge)
+	var moveToX = edge.vertex1.pos.x // + vertexWidth/2;
+	var moveToY = edge.vertex1.pos.y // + vertexWidth/2;
+	var lineToX = edge.vertex2.pos.x // + vertexWidth/2;
+	var lineToY = edge.vertex2.pos.y // + vertexWidth/2;
 	context.beginPath();
 	context.moveTo(moveToX, moveToY);
 	context.lineTo(lineToX, lineToY);
 	context.stroke();
+}
+
+function drawGraph() {
+	canvas.width = canvas.width;
+	for (x in graph.edges) {
+		drawEdge(graph.edges[x]);
+	}
+
+	for (x in graph.vertices) {
+		drawVertex(graph.vertices[x]);
+	}
 }
 
 function getMousePos(event) {

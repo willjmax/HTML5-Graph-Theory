@@ -1,7 +1,9 @@
 function Edge(obj) {
 	Edge.count++;
-	this.vertices = [obj.vertex1, obj.vertex2];
-	this.id = count;
+	this.vertex1 = obj.vertex1;
+	this.vertex2 = obj.vertex2;
+	this.id = Edge.count;
+	console.log(obj)
 }
 
 Edge.count = 0;

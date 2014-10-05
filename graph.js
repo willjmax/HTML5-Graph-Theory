@@ -1,13 +1,14 @@
 function Graph() {
-	this.vertices = new Array();
-	this.edges = new Array();
+	this.vertices = { };
+	this.edges = { };
 }
 
 Graph.prototype.addVertex = function(vertex) {
-	this.vertices[Vertex.count] = new Vertex(vertex);
+	this.vertices[Vertex.count] = vertex;
 }
 
-Graph.prototype.addEdge = function() {
+Graph.prototype.addEdge = function(edge) {
+	this.edges[Edge.count] = edge;
 }
 
 Graph.prototype.removeVertex = function() {
