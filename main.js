@@ -44,7 +44,6 @@ function onLoad() {
 	addListeners();
 }
 
-
 function onMouseDown(event) {
 	if (isVertexClicked(event)) {
 		makingEdge = true;
@@ -56,9 +55,10 @@ function onMouseUp(event) {
 		var pos = getMousePos(event);
 		graph.addVertex(new Vertex({x: pos.x, y: pos.y}));
 	} else if (isVertexClicked(event) && makingEdge) {
+		makingEdge = false;
 		graph.addEdge(new Edge({vertex1: mousedownVertex, vertex2: mouseupVertex}));
 	}
-	drawGraph();
+	graph.draw(canvas, context);
 }
 
 function isVertexClicked(event) {
@@ -80,40 +80,6 @@ function isVertexClicked(event) {
 		}
 	}
 	return inVertex;
-}
-
-function drawVertex(vertex) {
-	var x = vertex.pos.x - vertexWidth/2;
-	var y = vertex.pos.y - vertexHeight/2;
-	var drawing = new Image();
-	drawing.src = "vertex.png";
-	drawing.onload = function() {
-		context.drawImage(drawing, x, y);
-	}
-}
-
-function drawEdge(edge) {
-	makingEdge = false;
-	console.log(edge)
-	var moveToX = edge.vertex1.pos.x // + vertexWidth/2;
-	var moveToY = edge.vertex1.pos.y // + vertexWidth/2;
-	var lineToX = edge.vertex2.pos.x // + vertexWidth/2;
-	var lineToY = edge.vertex2.pos.y // + vertexWidth/2;
-	context.beginPath();
-	context.moveTo(moveToX, moveToY);
-	context.lineTo(lineToX, lineToY);
-	context.stroke();
-}
-
-function drawGraph() {
-	canvas.width = canvas.width;
-	for (x in graph.edges) {
-		drawEdge(graph.edges[x]);
-	}
-
-	for (x in graph.vertices) {
-		drawVertex(graph.vertices[x]);
-	}
 }
 
 function getMousePos(event) {

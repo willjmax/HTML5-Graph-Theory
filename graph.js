@@ -16,3 +16,14 @@ Graph.prototype.removeVertex = function() {
 
 Graph.prototype.removeEdge = function() {
 }
+
+Graph.prototype.draw = function(canvas, context) {
+	canvas.width = canvas.width;
+	for (edge in this.edges) {
+		this.edges[edge].draw(context);
+	}
+
+	for (vertex in this.vertices) {
+		this.vertices[vertex].draw(context);
+	}
+}
