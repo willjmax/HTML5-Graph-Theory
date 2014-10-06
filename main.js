@@ -65,6 +65,7 @@ function onMouseUp(event) {
 		rightClick(event);
 	}
 	graph.draw(canvas, context);
+	movingVertex = false;
 }
 
 function onMouseMove(event) {
@@ -83,7 +84,6 @@ function leftClick(event) {
 		makingEdge = false;
 		graph.addEdge(new Edge({vertex1: mousedownVertex, vertex2: mouseupVertex}));
 	}
-	movingVertex = false;
 }
 
 function rightClick(event) {
