@@ -4,6 +4,7 @@ var graph;
 var mousedownVertex;
 var mouseupVertex;
 var makingEdge = false;
+var movingVertex = false;
 
 var PIXEL_RATIO = (function () {
     var ctx = document.createElement("canvas").getContext("2d"),
@@ -32,6 +33,7 @@ createHiDPICanvas = function(w, h, ratio) {
 function addListeners() {
 	canvas.addEventListener('mouseup', onMouseUp);
 	canvas.addEventListener('mousedown', onMouseDown);
+	canvas.addEventListener('mousemove', onMouseMove);
 	canvas.oncontextmenu = function (event) {
 		event.preventDefault();
 	};
@@ -47,7 +49,11 @@ function onLoad() {
 
 function onMouseDown(event) {
 	if (isVertexClicked(event)) {
-		makingEdge = true;
+		if (event.ctrlKey) {
+			makingEdge = true;
+		} else {
+			movingVertex = true;
+		}
 	}
 }
 
@@ -61,14 +67,23 @@ function onMouseUp(event) {
 	graph.draw(canvas, context);
 }
 
+function onMouseMove(event) {
+	if(movingVertex) {
+		var pos = getMousePos(event);
+		graph.vertices[mousedownVertex.id].pos = {x: pos.x, y: pos.y };
+		graph.draw(canvas, context);
+	}
+}
+
 function leftClick(event) {
-	if(!isVertexClicked(event)) {
+	if(!isVertexClicked(event) && !movingVertex) {
 		var pos = getMousePos(event);
 		graph.addVertex(new Vertex({x: pos.x, y: pos.y}));
 	} else if (isVertexClicked(event) && makingEdge) {
 		makingEdge = false;
 		graph.addEdge(new Edge({vertex1: mousedownVertex, vertex2: mouseupVertex}));
 	}
+	movingVertex = false;
 }
 
 function rightClick(event) {

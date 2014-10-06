@@ -13,7 +13,6 @@ Graph.prototype.addEdge = function(edge) {
 
 Graph.prototype.removeVertex = function(id) {
 	for (edge in this.edges) {
-		console.log(edge);
 		if (this.edges[edge].vertex1 == this.vertices[id] || this.edges[edge].vertex2 == this.vertices[id]) {
 			delete this.edges[edge];
 		}
@@ -29,7 +28,6 @@ Graph.prototype.draw = function(canvas, context) {
 	for (edge in this.edges) {
 		this.edges[edge].draw(context);
 	}
-
 	for (vertex in this.vertices) {
 		this.vertices[vertex].draw(context);
 	}
