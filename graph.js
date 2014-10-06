@@ -11,7 +11,14 @@ Graph.prototype.addEdge = function(edge) {
 	this.edges[Edge.count] = edge;
 }
 
-Graph.prototype.removeVertex = function() {
+Graph.prototype.removeVertex = function(id) {
+	for (edge in this.edges) {
+		console.log(edge);
+		if (this.edges[edge].vertex1 == this.vertices[id] || this.edges[edge].vertex2 == this.vertices[id]) {
+			delete this.edges[edge];
+		}
+	}
+	delete this.vertices[id];
 }
 
 Graph.prototype.removeEdge = function() {

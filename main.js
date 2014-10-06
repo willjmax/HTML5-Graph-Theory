@@ -3,8 +3,6 @@ var context;
 var graph;
 var mousedownVertex;
 var mouseupVertex;
-var vertexWidth = 12;
-var vertexHeight = 12;
 var makingEdge = false;
 
 var PIXEL_RATIO = (function () {
@@ -34,6 +32,9 @@ createHiDPICanvas = function(w, h, ratio) {
 function addListeners() {
 	canvas.addEventListener('mouseup', onMouseUp);
 	canvas.addEventListener('mousedown', onMouseDown);
+	canvas.oncontextmenu = function (event) {
+		event.preventDefault();
+	};
 }
 
 function onLoad() {
@@ -51,6 +52,16 @@ function onMouseDown(event) {
 }
 
 function onMouseUp(event) {
+	if (event.which === 1) {
+		leftClick(event);
+	}
+	if (event.which === 3) {
+		rightClick(event);
+	}
+	graph.draw(canvas, context);
+}
+
+function leftClick(event) {
 	if(!isVertexClicked(event)) {
 		var pos = getMousePos(event);
 		graph.addVertex(new Vertex({x: pos.x, y: pos.y}));
@@ -58,28 +69,36 @@ function onMouseUp(event) {
 		makingEdge = false;
 		graph.addEdge(new Edge({vertex1: mousedownVertex, vertex2: mouseupVertex}));
 	}
-	graph.draw(canvas, context);
+}
+
+function rightClick(event) {
+	var vertex = isVertexClicked(event);
+	if (vertex > 0) {
+		graph.removeVertex(vertex);
+	}
 }
 
 function isVertexClicked(event) {
 	var pos = getMousePos(event);
 	var inVertex = false;
+	var clickedVertex = 0;
 	for (x in graph.vertices) {
-		inVertex = pos.x <= graph.vertices[x].pos.x + 2*vertexWidth &&
-				   pos.x >= graph.vertices[x].pos.x - vertexWidth &&
-				   pos.y <= graph.vertices[x].pos.y + 2*vertexHeight &&
-				   pos.y >= graph.vertices[x].pos.y - vertexHeight;
+		inVertex = pos.x <= graph.vertices[x].pos.x + 2*Vertex.imgWidth &&
+				   pos.x >= graph.vertices[x].pos.x - Vertex.imgWidth &&
+				   pos.y <= graph.vertices[x].pos.y + 2*Vertex.imgHeight &&
+				   pos.y >= graph.vertices[x].pos.y - Vertex.imgHeight;
 		if (inVertex) {
+			clickedVertex = x;
 			if (event.type == "mousedown") {
-					mousedownVertex = graph.vertices[x];
-				}
+				mousedownVertex = graph.vertices[x];
+			}
 			if (event.type == "mouseup") {
 				mouseupVertex = graph.vertices[x];
 			}
 			break;
 		}
 	}
-	return inVertex;
+	return clickedVertex;
 }
 
 function getMousePos(event) {
