@@ -116,6 +116,15 @@ function isVertexClicked(event) {
 	return clickedVertex;
 }
 
+function isEdgeClicked(event) {
+	var pos = getMousePos(event);
+	var inEdge = false;
+	var clickedEdge = 0;
+	for (x in graph.edges) {
+		var m = (x.vertex1.y - x.vertex1.y) / (x.vertex2.x - x.vertex2.y);
+	}
+}
+
 function getMousePos(event) {
 	var rect = canvas.getBoundingClientRect();
 	var x = (event.clientX - rect.left)/(rect.right - rect.left)*canvas.width;

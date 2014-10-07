@@ -20,7 +20,8 @@ Graph.prototype.removeVertex = function(id) {
 	delete this.vertices[id];
 }
 
-Graph.prototype.removeEdge = function() {
+Graph.prototype.removeEdge = function(id) {
+	delete this.edges[id];
 }
 
 Graph.prototype.draw = function(canvas, context) {
