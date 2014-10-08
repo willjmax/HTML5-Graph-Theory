@@ -33,3 +33,39 @@ Graph.prototype.draw = function(canvas, context) {
 		this.vertices[vertex].draw(context);
 	}
 }
+
+Graph.prototype.isVertexClicked = function isVertexClicked(event) {
+	var pos = getMousePos(event);
+	var inVertex = false;
+	var clickedVertex = 0;
+	for (vertex in graph.vertices) {
+		inVertex = pos.x <= graph.vertices[vertex].pos.x + 2*Vertex.imgWidth &&
+				   pos.x >= graph.vertices[vertex].pos.x - Vertex.imgWidth &&
+				   pos.y <= graph.vertices[vertex].pos.y + 2*Vertex.imgHeight &&
+				   pos.y >= graph.vertices[vertex].pos.y - Vertex.imgHeight;
+		if (inVertex) {
+			clickedVertex = vertex;
+			if (event.type == "mousedown") {
+				mousedownVertex = graph.vertices[vertex];
+			}
+			if (event.type == "mouseup") {
+				mouseupVertex = graph.vertices[vertex];
+			}
+			break;
+		}
+	}
+	return clickedVertex;
+}
+
+Graph.prototype.isEdgeClicked = function isEdgeClicked(event) {
+	var pos = getMousePos(event);
+	var inEdge = false;
+	var clickedEdge = 0;
+	for (edge in graph.edges) {
+		if (inEdge) {
+			clickedEdge = edge;
+			break;
+		}
+	}
+	return clickedEdge;
+}

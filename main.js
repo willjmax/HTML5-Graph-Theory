@@ -48,7 +48,7 @@ function onLoad() {
 }
 
 function onMouseDown(event) {
-	if (isVertexClicked(event)) {
+	if (graph.isVertexClicked(event)) {
 		if (event.ctrlKey) {
 			makingEdge = true;
 		} else {
@@ -77,51 +77,23 @@ function onMouseMove(event) {
 }
 
 function leftClick(event) {
-	if(!isVertexClicked(event) && !movingVertex) {
+	if(!graph.isVertexClicked(event) && !movingVertex) {
 		var pos = getMousePos(event);
 		graph.addVertex(new Vertex({x: pos.x, y: pos.y}));
-	} else if (isVertexClicked(event) && makingEdge) {
+	} else if (graph.isVertexClicked(event) && makingEdge) {
 		makingEdge = false;
 		graph.addEdge(new Edge({vertex1: mousedownVertex, vertex2: mouseupVertex}));
 	}
 }
 
 function rightClick(event) {
-	var vertex = isVertexClicked(event);
+	var vertex = graph.isVertexClicked(event);
+	var edge = graph.isEdgeClicked(event);
 	if (vertex > 0) {
 		graph.removeVertex(vertex);
 	}
-}
-
-function isVertexClicked(event) {
-	var pos = getMousePos(event);
-	var inVertex = false;
-	var clickedVertex = 0;
-	for (x in graph.vertices) {
-		inVertex = pos.x <= graph.vertices[x].pos.x + 2*Vertex.imgWidth &&
-				   pos.x >= graph.vertices[x].pos.x - Vertex.imgWidth &&
-				   pos.y <= graph.vertices[x].pos.y + 2*Vertex.imgHeight &&
-				   pos.y >= graph.vertices[x].pos.y - Vertex.imgHeight;
-		if (inVertex) {
-			clickedVertex = x;
-			if (event.type == "mousedown") {
-				mousedownVertex = graph.vertices[x];
-			}
-			if (event.type == "mouseup") {
-				mouseupVertex = graph.vertices[x];
-			}
-			break;
-		}
-	}
-	return clickedVertex;
-}
-
-function isEdgeClicked(event) {
-	var pos = getMousePos(event);
-	var inEdge = false;
-	var clickedEdge = 0;
-	for (x in graph.edges) {
-		var m = (x.vertex1.y - x.vertex1.y) / (x.vertex2.x - x.vertex2.y);
+	if (edge > 0) {
+		graph.removeEdge(edge);
 	}
 }
 
