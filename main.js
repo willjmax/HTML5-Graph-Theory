@@ -89,7 +89,7 @@ function leftClick(event) {
 function rightClick(event) {
 	var vertex = graph.isVertexClicked(event);
 	var edge = graph.isEdgeClicked(event);
-	if (vertex > 0) {
+	if (vertex > 0 && edge == 0) {
 		graph.removeVertex(vertex);
 	}
 	if (edge > 0) {

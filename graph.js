@@ -62,6 +62,11 @@ Graph.prototype.isEdgeClicked = function isEdgeClicked(event) {
 	var inEdge = false;
 	var clickedEdge = 0;
 	for (edge in graph.edges) {
+		var m = (graph.edges[edge].vertex1.pos.y - graph.edges[edge].vertex2.pos.y) / (graph.edges[edge].vertex1.pos.x - graph.edges[edge].vertex2.pos.x);
+		var yminusy = pos.y - graph.edges[edge].vertex1.pos.y;
+		var xminusx = pos.x - graph.edges[edge].vertex1.pos.x 
+		console.log(yminusy, xminusx, m, m*xminusx);
+		inEdge = (Math.abs(yminusy - (xminusx*m)) < 2);
 		if (inEdge) {
 			clickedEdge = edge;
 			break;
