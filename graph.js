@@ -62,11 +62,17 @@ Graph.prototype.isEdgeClicked = function isEdgeClicked(event) {
 	var inEdge = false;
 	var clickedEdge = 0;
 	for (edge in graph.edges) {
-		var m = (graph.edges[edge].vertex1.pos.y - graph.edges[edge].vertex2.pos.y) / (graph.edges[edge].vertex1.pos.x - graph.edges[edge].vertex2.pos.x);
-		var yminusy = pos.y - graph.edges[edge].vertex1.pos.y;
-		var xminusx = pos.x - graph.edges[edge].vertex1.pos.x 
-		console.log(yminusy, xminusx, m, m*xminusx);
-		inEdge = (Math.abs(yminusy - (xminusx*m)) < 2);
+		var x = (pos.x * Math.cos(-graph.edges[edge].rotation)) - (pos.y * Math.sin(-graph.edges[edge].rotation));
+		var y = (pos.y * Math.cos(-graph.edges[edge].rotation)) + (pos.x * Math.sin(-graph.edges[edge].rotation));
+		var validX = (x >= Math.min(graph.edges[edge].unrotatedX1, graph.edges[edge].unrotatedX2) && x <= Math.max(graph.edges[edge].unrotatedX1, graph.edges[edge].unrotatedX2));
+		var validY = (y >= (graph.edges[edge].unrotatedY1 - 2) && y <= (graph.edges[edge].unrotatedY1 + 2));
+		console.log("x: " + x);
+		console.log("y: " + y);
+		console.log("maxX: " + Math.max(graph.edges[edge].unrotatedX1, graph.edges[edge].unrotatedX2));
+		console.log("minX: " + Math.min(graph.edges[edge].unrotatedX1, graph.edges[edge].unrotatedX2));
+		console.log("minY: " + (graph.edges[edge].unrotatedY1 - 2));
+		console.log("maxY: " + (graph.edges[edge].unrotatedY1 + 2));
+		inEdge = (validX && validY);
 		if (inEdge) {
 			clickedEdge = edge;
 			break;
