@@ -6,20 +6,19 @@ var mouseupVertex;
 var makingEdge = false;
 var movingVertex = false;
 
-var PIXEL_RATIO = (function () {
+PIXEL_RATIO = function () {
     var ctx = document.createElement("canvas").getContext("2d"),
-        dpr = window.devicePixelRatio || 1,
-        bsr = ctx.webkitBackingStorePixelRatio ||
-              ctx.mozBackingStorePixelRatio ||
-              ctx.msBackingStorePixelRatio ||
-              ctx.oBackingStorePixelRatio ||
-              ctx.backingStorePixelRatio || 1;
-
+    dpr = window.devicePixelRatio || 1,
+    bsr = ctx.webkitBackingStorePixelRatio ||
+    ctx.mozBackingStorePixelRatio ||
+    ctx.msBackingStorePixelRatio ||
+    ctx.oBackingStorePixelRatio ||
+    ctx.backingStorePixelRatio || 1;
     return dpr / bsr;
-})();
+}
 
 createHiDPICanvas = function(w, h, ratio) {
-    if (!ratio) { ratio = PIXEL_RATIO; }
+    if (!ratio) { ratio = PIXEL_RATIO(); }
     var can = document.createElement("canvas");
 	can.setAttribute("id", "canvas");
     can.width = w * ratio;
@@ -41,10 +40,25 @@ function addListeners() {
 
 function onLoad() {
 	graph = new Graph();
-	canvas = createHiDPICanvas(1000, 700);
-	document.body.appendChild(canvas);
+	var dimensions = getWindowSize();
+	var width = dimensions.width;
+	var height = dimensions.height;
+	canvas = createHiDPICanvas(width * 0.70, height);
+	document.getElementById("canvasContainer").appendChild(canvas);
 	context = document.getElementById("canvas").getContext("2d");
 	addListeners();
+}
+
+function onResize() {
+	var dimensions = getWindowSize();
+	var width = dimensions.width;
+	var height = dimensions.height;
+	var newcanvas = createHiDPICanvas(width * 0.70, height);
+	document.getElementById("canvasContainer").replaceChild(newcanvas, canvas);	
+	canvas = newcanvas;
+	context = document.getElementById("canvas").getContext("2d");
+	addListeners();
+	graph.draw(canvas, context);
 }
 
 function onMouseDown(event) {
@@ -85,7 +99,7 @@ function onMouseMove(event) {
 }
 
 function leftClick(event) {
-	if(!graph.isVertexClicked(event) && !movingVertex && !makingEdge) {
+	if(!graph.isVertexClicked(event) && !movingVertex && !makingEdge && !graph.isEdgeClicked(event)) {
 		var pos = getMousePos(event);
 		graph.addVertex(new Vertex({x: pos.x, y: pos.y}));
 	} else if (graph.isVertexClicked(event) && makingEdge) {
@@ -93,6 +107,7 @@ function leftClick(event) {
 		graph.addEdge(new Edge({vertex1: mousedownVertex, vertex2: mouseupVertex}));
 	} else if (makingEdge) {
 		makingEdge = false;
+	} else if (graph.isEdgeClicked(event)) {
 	}
 }
 
@@ -114,4 +129,9 @@ function getMousePos(event) {
 	return { x: x, y: y}
 }
 
+function getWindowSize() {
+	return {width: window.innerWidth, height: window.innerHeight};
+}
+
 window.onload = onLoad;
+window.onresize = onResize;

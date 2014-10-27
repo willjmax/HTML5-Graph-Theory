@@ -3,6 +3,7 @@ function Edge(obj) {
 	this.vertex1 = obj.vertex1;
 	this.vertex2 = obj.vertex2;
 	this.id = Edge.count;
+	this.weight = 0;
 	this.translateX = 0;
 	this.translateY = 0;
 	this.rotation = 0;

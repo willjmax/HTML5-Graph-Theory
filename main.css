@@ -1,16 +1,66 @@
+html {
+	height: 100%;
+	width: 100%;
+}
+
 body {
 	width: 100%;
 	height: 100%;
 	margin: 0;
-	background-color: gray;
+	background: none repeat scroll 0 0 #222;
 	text-align: center;
 }
 
+#infoDiv {
+	/*background: none repeat scroll 0 0 #d9750b;*/
+	display: inline-block;
+/*	margin-left: 2%;
+	padding-left: .5%;
+	padding-right: .5%;
+	margin-top: 5%; */
+	color: #d9750b;
+	height: 100%;
+	opacity: 0.8;
+	float: left;
+	width: 30%;
+	overflow: hidden;
+}
+
+#infoDiv ul {
+	text-align: left;
+}
+
+#canvasContainer {
+	padding-top: 0;
+	display: inline-block;
+	float: right;
+	width: 70%;
+	height: 100%;
+}
 
 #canvas {
-	margin-top: 10%;
-	width: 500;
-	height: 500;
 	background-color: white;
 	border: none;
+}
+
+#tabContainer {
+	height: auto;
+	width: 100%;
+	display: inline-block;
+}
+
+.tab {
+	float: left;
+	width: 33%;
+	height: 5%;
+	cursor: pointer;
+	background: none repeat scroll 0 0 #ff0000;
+	outline: solid black;
+	margin-top: 2%;
+	margin-bottom: 2%;
+	color: white;
+}
+
+.tab:hover {
+	background: none repeat scroll 0 0 #222;
 }

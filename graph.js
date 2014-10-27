@@ -66,12 +66,6 @@ Graph.prototype.isEdgeClicked = function isEdgeClicked(event) {
 		var y = (pos.y * Math.cos(-graph.edges[edge].rotation)) + (pos.x * Math.sin(-graph.edges[edge].rotation));
 		var validX = (x >= Math.min(graph.edges[edge].unrotatedX1, graph.edges[edge].unrotatedX2) && x <= Math.max(graph.edges[edge].unrotatedX1, graph.edges[edge].unrotatedX2));
 		var validY = (y >= (graph.edges[edge].unrotatedY1 - 2) && y <= (graph.edges[edge].unrotatedY1 + 2));
-		console.log("x: " + x);
-		console.log("y: " + y);
-		console.log("maxX: " + Math.max(graph.edges[edge].unrotatedX1, graph.edges[edge].unrotatedX2));
-		console.log("minX: " + Math.min(graph.edges[edge].unrotatedX1, graph.edges[edge].unrotatedX2));
-		console.log("minY: " + (graph.edges[edge].unrotatedY1 - 2));
-		console.log("maxY: " + (graph.edges[edge].unrotatedY1 + 2));
 		inEdge = (validX && validY);
 		if (inEdge) {
 			clickedEdge = edge;
