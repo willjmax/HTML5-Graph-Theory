@@ -9,15 +9,11 @@ body {
 	margin: 0;
 	background: none repeat scroll 0 0 #222;
 	text-align: center;
+	font-family: 'Roboto', sans-serif;
 }
 
 #infoDiv {
-	/*background: none repeat scroll 0 0 #d9750b;*/
 	display: inline-block;
-/*	margin-left: 2%;
-	padding-left: .5%;
-	padding-right: .5%;
-	margin-top: 5%; */
 	color: #d9750b;
 	height: 100%;
 	opacity: 0.8;
@@ -46,7 +42,7 @@ body {
 #tabContainer {
 	height: auto;
 	width: 100%;
-	display: inline-block;
+	display: table;
 }
 
 .tab {
@@ -59,8 +55,19 @@ body {
 	margin-top: 2%;
 	margin-bottom: 2%;
 	color: white;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.tab span {
+	vertical-align: middle;
 }
 
 .tab:hover {
 	background: none repeat scroll 0 0 #222;
+}
+
+#weightDiv {
+	display: none;
+	position: absolute;
 }

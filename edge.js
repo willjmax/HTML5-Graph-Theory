@@ -13,7 +13,6 @@ function Edge(obj) {
 	this.rectHeight = 0;
 	this.defineRect();
 	this.unrotate();
-
 }
 
 Edge.prototype.olddraw = function(context) {

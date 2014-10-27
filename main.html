@@ -4,6 +4,7 @@
 		<script src="edge.js"></script>
 		<script src="graph.js"></script>
 		<script src="main.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
  		<link rel="stylesheet" type="text/css" href="main.css">
 	</head>
 	<body>
@@ -14,18 +15,26 @@
 					<div class="tab">Invariants</div>
 					<div class="tab">Algorithms</div>
 				</div>
-				<ul>
-					<li>Left click white space to add a vertex</li>
-					<li>Right click a vertex to remove it</li>
-					<li>Left click a vertex and drag to move it around</li>
-					<li>Left click a vertex while holding ctrl and drag to another vertex to add an edge</li>
-					<li>Right click an edge to remove it</li>
-					<li>Left click an edge to add a weight to it</li>
-				</ul>
+				<div class="infoSection" id="instructions">
+					<ul>
+						<li>Left click white space to add a vertex</li>
+						<li>Right click a vertex to remove it</li>
+						<li>Left click a vertex and drag to move it around</li>
+						<li>Left click a vertex while holding ctrl and drag to another vertex to add an edge</li>
+						<li>Right click an edge to remove it</li>
+						<li>Left click an edge to add a weight to it</li>
+					</ul>
+				</div>
+				<div class="infoSection" id="invariants">
+				</div>
+				<div class="infoSection" id="algorithms">
+				</div>
 			</div>
 			<div id="canvasContainer">
 			</div>
 		</div>
+		<div id="weightDiv">
+			<input id="weight" size="4" type="text" />
+		</div>
 	</body>
 </html>
-

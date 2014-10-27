@@ -3,8 +3,10 @@ var context;
 var graph;
 var mousedownVertex;
 var mouseupVertex;
+var selectedEdge;
 var makingEdge = false;
 var movingVertex = false;
+var addingWeight = false;
 
 PIXEL_RATIO = function () {
     var ctx = document.createElement("canvas").getContext("2d"),
@@ -99,15 +101,31 @@ function onMouseMove(event) {
 }
 
 function leftClick(event) {
-	if(!graph.isVertexClicked(event) && !movingVertex && !makingEdge && !graph.isEdgeClicked(event)) {
+	if(!graph.isVertexClicked(event) && !movingVertex && !makingEdge && !graph.isEdgeClicked(event) && !addingWeight) {
 		var pos = getMousePos(event);
 		graph.addVertex(new Vertex({x: pos.x, y: pos.y}));
+	} else if (addingWeight) {
+		addingWeight = false;
+		var weightDiv = document.getElementById("weightDiv");
+		var weight = document.getElementById("weight");
+		weight.blur();
+		graph.edges[selectedEdge].weight = parseInt(weight.value);
+		console.log(graph.edges[selectedEdge]);
+		weight.value = "";
+		weightDiv.style.display = "none";
 	} else if (graph.isVertexClicked(event) && makingEdge) {
 		makingEdge = false;
 		graph.addEdge(new Edge({vertex1: mousedownVertex, vertex2: mouseupVertex}));
 	} else if (makingEdge) {
 		makingEdge = false;
-	} else if (graph.isEdgeClicked(event)) {
+	} else if ((selectedEdge = graph.isEdgeClicked(event)) && !graph.isVertexClicked(event)) {
+		addingWeight = true;
+		var weightDiv = document.getElementById("weightDiv");
+		var weight = document.getElementById("weight");
+		weightDiv.style.display = "block";
+		weightDiv.style.top = event.pageY;
+		weightDiv.style.left = event.pageX;
+		weight.focus();
 	}
 }
 
