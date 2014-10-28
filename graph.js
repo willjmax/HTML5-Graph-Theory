@@ -1,6 +1,7 @@
 function Graph() {
 	this.vertices = { };
 	this.edges = { };
+	this.weighted = false;
 }
 
 Graph.prototype.addVertex = function(vertex) {
@@ -27,7 +28,7 @@ Graph.prototype.removeEdge = function(id) {
 Graph.prototype.draw = function(canvas, context) {
 	canvas.width = canvas.width;
 	for (edge in this.edges) {
-		this.edges[edge].draw(context);
+		this.edges[edge].draw(context, this.weighted);
 	}
 	for (vertex in this.vertices) {
 		this.vertices[vertex].draw(context);
@@ -73,4 +74,14 @@ Graph.prototype.isEdgeClicked = function isEdgeClicked(event) {
 		}
 	}
 	return clickedEdge;
+}
+
+Graph.prototype.checkWeights = function() {
+	this.weighted = false;
+	for (edge in graph.edges) {
+		if (this.edges[edge].weight > 0) {
+			this.weighted = true;
+			break;
+		}
+	}
 }

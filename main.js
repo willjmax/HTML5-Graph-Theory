@@ -110,7 +110,7 @@ function leftClick(event) {
 		var weight = document.getElementById("weight");
 		weight.blur();
 		graph.edges[selectedEdge].weight = parseInt(weight.value);
-		console.log(graph.edges[selectedEdge]);
+		graph.checkWeights();
 		weight.value = "";
 		weightDiv.style.display = "none";
 	} else if (graph.isVertexClicked(event) && makingEdge) {

@@ -15,18 +15,7 @@ function Edge(obj) {
 	this.unrotate();
 }
 
-Edge.prototype.olddraw = function(context) {
-	var moveToX = this.vertex1.pos.x;
-	var moveToY = this.vertex1.pos.y;
-	var lineToX = this.vertex2.pos.x;
-	var lineToY = this.vertex2.pos.y;
-	context.beginPath();
-	context.moveTo(moveToX, moveToY);
-	context.lineTo(lineToX, lineToY);
-	context.stroke();
-}
-
-Edge.prototype.draw = function(context) {
+Edge.prototype.draw = function(context, weighted) {
     this.defineRect();
 	this.unrotate();
     context.save();
@@ -41,6 +30,12 @@ Edge.prototype.draw = function(context) {
     context.fill();
     context.stroke();
     context.restore();
+	if(weighted) {
+		var centerX = (this.vertex1.pos.x + this.vertex2.pos.x) / 2;
+		var centerY = (this.vertex1.pos.y + this.vertex2.pos.y) / 2;
+		context.font = Edge.font;
+		context.fillText(this.weight, centerX, centerY);
+	}
 }
 
 Edge.prototype.defineRect = function() {
@@ -62,9 +57,10 @@ Edge.prototype.unrotate = function() {
 	this.unrotatedX1 = (this.vertex1.pos.x * Math.cos(-this.rotation)) - (this.vertex1.pos.y * Math.sin(-this.rotation));
 	this.unrotatedY1 = (this.vertex1.pos.y * Math.cos(-this.rotation)) + (this.vertex1.pos.x * Math.sin(-this.rotation));
 	this.unrotatedX2 = (this.vertex2.pos.x * Math.cos(-this.rotation)) - (this.vertex2.pos.y * Math.sin(-this.rotation));
-	this.unrotatedY2 = this.unrotatedY1 + this.lineWidth;
+	this.unrotatedY2 = this.unrotatedY1 + Edge.lineWidth;
 }
 
 Edge.count = 0;
 Edge.lineWidth = 1;
 Edge.lineFill = "black";
+Edge.font = "25px Arial";
