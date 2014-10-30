@@ -12,6 +12,10 @@ Vertex.prototype.draw = function(context) {
 	}
 }
 
+Vertex.prototype.equals = function(vertex) {
+	return (this.pos.x === vertex.pos.x && this.pos.y === vertex.pos.y);
+}
+
 Vertex.count = 0;
 Vertex.imgWidth = 12;
 Vertex.imgHeight = 12;

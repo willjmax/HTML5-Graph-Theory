@@ -4,6 +4,8 @@ function Edge(obj) {
 	this.vertex2 = obj.vertex2;
 	this.id = Edge.count;
 	this.weight = 0;
+	this.reflexive = (obj.vertex1.equals(obj.vertex2));
+	
 	this.translateX = 0;
 	this.translateY = 0;
 	this.rotation = 0;
@@ -30,7 +32,7 @@ Edge.prototype.draw = function(context, weighted) {
     context.fill();
     context.stroke();
     context.restore();
-	if(weighted) {
+	if (weighted) {
 		var centerX = (this.vertex1.pos.x + this.vertex2.pos.x) / 2;
 		var centerY = (this.vertex1.pos.y + this.vertex2.pos.y) / 2;
 		context.font = Edge.font;
