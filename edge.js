@@ -5,7 +5,6 @@ function Edge(obj) {
 	this.id = Edge.count;
 	this.weight = 0;
 	this.reflexive = (obj.vertex1.equals(obj.vertex2));
-	
 	this.translateX = 0;
 	this.translateY = 0;
 	this.rotation = 0;
@@ -18,25 +17,34 @@ function Edge(obj) {
 }
 
 Edge.prototype.draw = function(context, weighted) {
-    this.defineRect();
-	this.unrotate();
-    context.save();
-    context.beginPath();
-    context.translate(this.translateX, this.translateY);
-    context.rotate(this.rotation);
-    context.rect(this.rectX, this.rectY, this.rectWidth, this.rectHeight);
-    context.translate(-this.translateX, -this.translateY);
-    context.rotate(-this.rotation);
-    context.fillStyle = Edge.lineFill;
-    context.strokeStyle = Edge.lineFill;
-    context.fill();
-    context.stroke();
-    context.restore();
-	if (weighted) {
-		var centerX = (this.vertex1.pos.x + this.vertex2.pos.x) / 2;
-		var centerY = (this.vertex1.pos.y + this.vertex2.pos.y) / 2;
-		context.font = Edge.font;
-		context.fillText(this.weight, centerX, centerY);
+	if (!this.reflexive) {
+		this.defineRect();
+		this.unrotate();
+		context.save();
+		context.beginPath();
+		context.translate(this.translateX, this.translateY);
+		context.rotate(this.rotation);
+		context.rect(this.rectX, this.rectY, this.rectWidth, this.rectHeight);
+		context.translate(-this.translateX, -this.translateY);
+		context.rotate(-this.rotation);
+		context.fillStyle = Edge.lineFill;
+		context.strokeStyle = Edge.lineFill;
+		context.fill();
+		context.stroke();
+		context.restore();
+		if (weighted) {
+			var centerX = (this.vertex1.pos.x + this.vertex2.pos.x) / 2;
+			var centerY = (this.vertex1.pos.y + this.vertex2.pos.y) / 2;
+			context.font = Edge.font;
+			context.fillText(this.weight, centerX, centerY);
+		}
+	} else {
+		context.beginPath();
+		context.arc(this.vertex1.pos.x, this.vertex1.pos.y, Edge.radius, 0, 2*Math.PI);
+		context.lineWidth = Edge.lineWidth;
+		context.fillStyle = Edge.lineFill;
+		context.strokeStyle = Edge.lineFill;
+		context.stroke();
 	}
 }
 
@@ -66,3 +74,4 @@ Edge.count = 0;
 Edge.lineWidth = 1;
 Edge.lineFill = "black";
 Edge.font = "25px Arial";
+Edge.radius = 25;

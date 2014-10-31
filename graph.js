@@ -26,7 +26,7 @@ Graph.prototype.removeEdge = function(id) {
 }
 
 Graph.prototype.draw = function(canvas, context) {
-	canvas.width = canvas.width;
+	context.clearRect(0, 0, canvas.width, canvas.height);
 	for (edge in this.edges) {
 		this.edges[edge].draw(context, this.weighted);
 	}
@@ -35,7 +35,7 @@ Graph.prototype.draw = function(canvas, context) {
 	}
 }
 
-Graph.prototype.isVertexClicked = function isVertexClicked(event) {
+Graph.prototype.isVertexClicked = function (event) {
 	var pos = getMousePos(event);
 	var inVertex = false;
 	var clickedVertex = 0;
@@ -58,7 +58,7 @@ Graph.prototype.isVertexClicked = function isVertexClicked(event) {
 	return clickedVertex;
 }
 
-Graph.prototype.isEdgeClicked = function isEdgeClicked(event) {
+Graph.prototype.isEdgeClicked = function (event) {
 	var pos = getMousePos(event);
 	var inEdge = false;
 	var clickedEdge = 0;
