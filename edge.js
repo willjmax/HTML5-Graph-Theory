@@ -4,7 +4,10 @@ function Edge(obj) {
 	this.vertex2 = obj.vertex2;
 	this.id = Edge.count;
 	this.weight = 0;
+	
 	this.reflexive = (obj.vertex1.equals(obj.vertex2));
+	this.reflexiveCenter;
+	
 	this.translateX = 0;
 	this.translateY = 0;
 	this.rotation = 0;
@@ -12,11 +15,12 @@ function Edge(obj) {
 	this.rectY = 0;
 	this.rectWidth = 0;
 	this.rectHeight = 0;
+	
 	this.defineRect();
 	this.unrotate();
 }
 
-Edge.prototype.draw = function(context, weighted) {
+Edge.prototype.draw = function(context, canvas, weighted) {
 	if (!this.reflexive) {
 		this.defineRect();
 		this.unrotate();
@@ -36,12 +40,24 @@ Edge.prototype.draw = function(context, weighted) {
 			var centerX = (this.vertex1.pos.x + this.vertex2.pos.x) / 2;
 			var centerY = (this.vertex1.pos.y + this.vertex2.pos.y) / 2;
 			context.font = Edge.font;
+			context.lineWidth = Edge.lineWidth;
 			context.fillText(this.weight, centerX, centerY);
 		}
 	} else {
+		var quadrant = 0;
+		if (this.vertex1.pos.x > canvas.width/2 && this.vertex1.pos.y < canvas.height/2) {
+			quadrant = 1;
+		} else if (this.vertex1.pos.x < canvas.width/2 && this.vertex1.pos.y < canvas.height/2) {
+			quadrant = 2;
+		} else if (this.vertex1.pos.x < canvas.width/2 && this.vertex1.pos.y > canvas.height/2) {
+			quadrant = 3;
+		} else if (this.vertex1.pos.x > canvas.width/2 && this.vertex1.pos.y > canvas.height/2) {
+			quadrant = 4;
+		}
+
 		context.beginPath();
 		context.arc(this.vertex1.pos.x, this.vertex1.pos.y, Edge.radius, 0, 2*Math.PI);
-		context.lineWidth = Edge.lineWidth;
+		context.lineWidth = Edge.lineWidth*2;
 		context.fillStyle = Edge.lineFill;
 		context.strokeStyle = Edge.lineFill;
 		context.stroke();

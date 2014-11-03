@@ -28,7 +28,7 @@ Graph.prototype.removeEdge = function(id) {
 Graph.prototype.draw = function(canvas, context) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	for (edge in this.edges) {
-		this.edges[edge].draw(context, this.weighted);
+		this.edges[edge].draw(context, canvas, this.weighted);
 	}
 	for (vertex in this.vertices) {
 		this.vertices[vertex].draw(context);
@@ -39,18 +39,18 @@ Graph.prototype.isVertexClicked = function (event) {
 	var pos = getMousePos(event);
 	var inVertex = false;
 	var clickedVertex = 0;
-	for (vertex in graph.vertices) {
-		inVertex = pos.x <= graph.vertices[vertex].pos.x + 2*Vertex.imgWidth &&
-				   pos.x >= graph.vertices[vertex].pos.x - Vertex.imgWidth &&
-				   pos.y <= graph.vertices[vertex].pos.y + 2*Vertex.imgHeight &&
-				   pos.y >= graph.vertices[vertex].pos.y - Vertex.imgHeight;
+	for (vertex in this.vertices) {
+		inVertex = pos.x <= this.vertices[vertex].pos.x + 2*Vertex.imgWidth &&
+				   pos.x >= this.vertices[vertex].pos.x - Vertex.imgWidth &&
+				   pos.y <= this.vertices[vertex].pos.y + 2*Vertex.imgHeight &&
+				   pos.y >= this.vertices[vertex].pos.y - Vertex.imgHeight;
 		if (inVertex) {
 			clickedVertex = vertex;
 			if (event.type == "mousedown") {
-				mousedownVertex = graph.vertices[vertex];
+				mousedownVertex = this.vertices[vertex];
 			}
 			if (event.type == "mouseup") {
-				mouseupVertex = graph.vertices[vertex];
+				mouseupVertex = this.vertices[vertex];
 			}
 			break;
 		}
@@ -62,12 +62,19 @@ Graph.prototype.isEdgeClicked = function (event) {
 	var pos = getMousePos(event);
 	var inEdge = false;
 	var clickedEdge = 0;
-	for (edge in graph.edges) {
-		var x = (pos.x * Math.cos(-graph.edges[edge].rotation)) - (pos.y * Math.sin(-graph.edges[edge].rotation));
-		var y = (pos.y * Math.cos(-graph.edges[edge].rotation)) + (pos.x * Math.sin(-graph.edges[edge].rotation));
-		var validX = (x >= Math.min(graph.edges[edge].unrotatedX1, graph.edges[edge].unrotatedX2) && x <= Math.max(graph.edges[edge].unrotatedX1, graph.edges[edge].unrotatedX2));
-		var validY = (y >= (graph.edges[edge].unrotatedY1 - 2) && y <= (graph.edges[edge].unrotatedY1 + 2));
-		inEdge = (validX && validY);
+	for (edge in this.edges) {
+		if (!this.edges[edge].reflexive) {
+			var x = (pos.x * Math.cos(-this.edges[edge].rotation)) - (pos.y * Math.sin(-this.edges[edge].rotation));
+			var y = (pos.y * Math.cos(-this.edges[edge].rotation)) + (pos.x * Math.sin(-this.edges[edge].rotation));
+			var validX = (x >= Math.min(this.edges[edge].unrotatedX1, this.edges[edge].unrotatedX2) && x <= Math.max(this.edges[edge].unrotatedX1, this.edges[edge].unrotatedX2));
+			var validY = (y >= (this.edges[edge].unrotatedY1 - 3) && y <= (this.edges[edge].unrotatedY1 + 3));
+			inEdge = (validX && validY);
+		} else {
+			var distance = Math.sqrt(Math.pow(this.edges[edge].vertex1.pos.x - pos.x, 2) +
+									 Math.pow(this.edges[edge].vertex1.pos.y - pos.y, 2));
+			console.log(Edge.radius - 3, Edge.radius + 3, distance);
+			inEdge = (distance >= Edge.radius - 3 && distance <= Edge.radius + 3);
+		}
 		if (inEdge) {
 			clickedEdge = edge;
 			break;
