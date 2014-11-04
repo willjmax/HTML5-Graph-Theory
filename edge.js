@@ -6,7 +6,7 @@ function Edge(obj) {
 	this.weight = 0;
 	
 	this.reflexive = (obj.vertex1.equals(obj.vertex2));
-	this.reflexiveCenter;
+	this.reflexiveCenter = {x: 0, y: 0};
 	
 	this.translateX = 0;
 	this.translateY = 0;
@@ -44,19 +44,22 @@ Edge.prototype.draw = function(context, canvas, weighted) {
 			context.fillText(this.weight, centerX, centerY);
 		}
 	} else {
-		var quadrant = 0;
 		if (this.vertex1.pos.x > canvas.width/2 && this.vertex1.pos.y < canvas.height/2) {
-			quadrant = 1;
+			this.reflexiveCenter.x = this.vertex1.pos.x + (Edge.radius/2 + Edge.radiusOffset);
+			this.reflexiveCenter.y = this.vertex1.pos.y - (Edge.radius/2 + Edge.radiusOffset);
 		} else if (this.vertex1.pos.x < canvas.width/2 && this.vertex1.pos.y < canvas.height/2) {
-			quadrant = 2;
+			this.reflexiveCenter.x = this.vertex1.pos.x - (Edge.radius/2 + Edge.radiusOffset);
+			this.reflexiveCenter.y = this.vertex1.pos.y - (Edge.radius/2 + Edge.radiusOffset);
 		} else if (this.vertex1.pos.x < canvas.width/2 && this.vertex1.pos.y > canvas.height/2) {
-			quadrant = 3;
+			this.reflexiveCenter.x = this.vertex1.pos.x - (Edge.radius/2 + Edge.radiusOffset);
+			this.reflexiveCenter.y = this.vertex1.pos.y + (Edge.radius/2 + Edge.radiusOffset);
 		} else if (this.vertex1.pos.x > canvas.width/2 && this.vertex1.pos.y > canvas.height/2) {
-			quadrant = 4;
+			this.reflexiveCenter.x = this.vertex1.pos.x + (Edge.radius/2 + Edge.radiusOffset);
+			this.reflexiveCenter.y = this.vertex1.pos.y + (Edge.radius/2 + Edge.radiusOffset);
 		}
-
+		
 		context.beginPath();
-		context.arc(this.vertex1.pos.x, this.vertex1.pos.y, Edge.radius, 0, 2*Math.PI);
+		context.arc(this.reflexiveCenter.x, this.reflexiveCenter.y, Edge.radius, 0, 2*Math.PI);
 		context.lineWidth = Edge.lineWidth*2;
 		context.fillStyle = Edge.lineFill;
 		context.strokeStyle = Edge.lineFill;
@@ -91,3 +94,4 @@ Edge.lineWidth = 1;
 Edge.lineFill = "black";
 Edge.font = "25px Arial";
 Edge.radius = 25;
+Edge.radiusOffset = 2;

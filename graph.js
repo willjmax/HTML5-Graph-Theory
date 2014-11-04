@@ -70,9 +70,8 @@ Graph.prototype.isEdgeClicked = function (event) {
 			var validY = (y >= (this.edges[edge].unrotatedY1 - 3) && y <= (this.edges[edge].unrotatedY1 + 3));
 			inEdge = (validX && validY);
 		} else {
-			var distance = Math.sqrt(Math.pow(this.edges[edge].vertex1.pos.x - pos.x, 2) +
-									 Math.pow(this.edges[edge].vertex1.pos.y - pos.y, 2));
-			console.log(Edge.radius - 3, Edge.radius + 3, distance);
+			var distance = Math.sqrt(Math.pow(this.edges[edge].reflexiveCenter.x - pos.x, 2) +
+									 Math.pow(this.edges[edge].reflexiveCenter.y - pos.y, 2));
 			inEdge = (distance >= Edge.radius - 3 && distance <= Edge.radius + 3);
 		}
 		if (inEdge) {
