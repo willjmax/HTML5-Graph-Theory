@@ -76,6 +76,9 @@ Edge.prototype.draw = function(context, canvas, weighted) {
 		context.lineWidth = Edge.lineWidth*2;
 		context.fillStyle = Edge.lineFill;
 		context.strokeStyle = Edge.lineFill;
+		context.font = Edge.font;
+		if (weighted)
+			context.fillText(this.weight, this.reflexiveCenter.x - 5, this.reflexiveCenter.y + 3);
 		context.stroke();
 	}
 }
