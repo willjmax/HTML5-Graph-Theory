@@ -44,7 +44,13 @@ Edge.prototype.draw = function(context, canvas, weighted) {
 			context.fillText(this.weight, centerX, centerY);
 		}
 	} else {
-		if (this.vertex1.pos.x > 2*canvas.width/3 && this.vertex1.pos.y < canvas.height/2) {
+		if (this.vertex1.pos.x > 2*canvas.width/3 && this.vertex1.pos.y > canvas.height/3 && this.vertex1.pos.y < 2*canvas.height/3) {
+			this.reflexiveCenter.x = this.vertex1.pos.x + (Edge.radius/2 + Edge.radiusOffset + 8);
+			this.reflexiveCenter.y = this.vertex1.pos.y;
+		} else if (this.vertex1.pos.x < canvas.width/3 && this.vertex1.pos.y < 2*canvas.height/3 && this.vertex1.pos.y > canvas.height/3) {
+			this.reflexiveCenter.x = this.vertex1.pos.x - (Edge.radius/2 + Edge.radiusOffset + 8);
+			this.reflexiveCenter.y = this.vertex1.pos.y;
+		} else if (this.vertex1.pos.x > 2*canvas.width/3 && this.vertex1.pos.y < canvas.height/2) {
 			this.reflexiveCenter.x = this.vertex1.pos.x + (Edge.radius/2 + Edge.radiusOffset);
 			this.reflexiveCenter.y = this.vertex1.pos.y - (Edge.radius/2 + Edge.radiusOffset);
 		} else if (this.vertex1.pos.x < canvas.width/3 && this.vertex1.pos.y < canvas.height/2) {
@@ -59,12 +65,7 @@ Edge.prototype.draw = function(context, canvas, weighted) {
 		} else if (this.vertex1.pos.x > canvas.width/3 && this.vertex1.pos.x < 2*canvas.width/3 && this.vertex1.pos.y < canvas.height/2) {
 			this.reflexiveCenter.x = this.vertex1.pos.x;
 			this.reflexiveCenter.y = this.vertex1.pos.y - (Edge.radius/2 + Edge.radiusOffset + 8);
-		} else if (this.vertex1.pos.x < canvas.width/3 && this.vertex1.pos.y > 2*canvas.height/3 && this.vertex1.pos.y < canvas.height/3) {
-			this.reflexiveCenter.x = this.vertex1.pos.x - (Edge.radius/2 + Edge.radiusOffset);
-			this.reflexiveCenter.y = this.vertex1.pos.y;
-		} else if (this.vertex1.pos.x > 2*canvas.width/2 && this.vertex1.pos.y > canvas.height/3 && this.vertex1.pos.y < 2*canvas.height/3) {
-			this.reflexiveCenter.x = this.vertex.pos.x + (Edge.radius/2 + Edge.radiusOffset);
-			this.reflexiveCenter.y = this.vertex.pos.y;
+
 		} else if (this.vertex1.pos.x > canvas.width/3 && this.vertex1.pos.x < 2*canvas.width/3 && this.vertex1.pos.y > canvas.height/2) {
 			this.reflexiveCenter.x = this.vertex1.pos.x;
 			this.reflexiveCenter.y = this.vertex1.pos.y + (Edge.radius/2 + Edge.radiusOffset + 8);
