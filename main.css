@@ -71,3 +71,7 @@ body {
 	display: none;
 	position: absolute;
 }
+
+div.infoSection:not([active='active']) {
+	display: none;
+}

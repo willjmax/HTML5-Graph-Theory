@@ -32,12 +32,20 @@ createHiDPICanvas = function(w, h, ratio) {
 }
 
 function addListeners() {
+	//canvas events
 	canvas.addEventListener('mouseup', onMouseUp);
 	canvas.addEventListener('mousedown', onMouseDown);
 	canvas.addEventListener('mousemove', onMouseMove);
 	canvas.oncontextmenu = function (event) {
 		event.preventDefault();
 	};
+	
+	//tabbed sections
+	var tab = document.querySelectorAll(".tab");
+	for (var i = 0; i < tab.length; i++) {
+		tab[i].addEventListener("click", tabClick);
+	}
+
 }
 
 function onLoad() {
@@ -149,6 +157,21 @@ function getMousePos(event) {
 
 function getWindowSize() {
 	return {width: window.innerWidth, height: window.innerHeight};
+}
+
+function tabClick(event) {
+	console.log(event.target);
+	var activetab = document.querySelectorAll(".tab[active=active]");
+	var activesection = document.getElementById(activetab[0].getAttribute('section'));
+	activesection.style.display = "none";
+	console.log(activetab[0]);
+	activetab[0].removeAttribute("active");
+	
+	var section = event.target.getAttribute("section");
+	event.target.setAttribute("active", "active");
+	var sectiondiv = document.getElementById(section);
+	sectiondiv.setAttribute("active", "active");
+	sectiondiv.style.display = "block";
 }
 
 window.onload = onLoad;
