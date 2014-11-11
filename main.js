@@ -117,7 +117,9 @@ function leftClick(event) {
 		var weightDiv = document.getElementById("weightDiv");
 		var weight = document.getElementById("weight");
 		weight.blur();
-		graph.edges[selectedEdge].weight = parseInt(weight.value);
+		if (!isNaN(parseFloat(weight.value)) && isFinite(parseFloat(weight.value)))
+			graph.edges[selectedEdge].weight = parseFloat(weight.value);
+		console.log(graph.edges[selectedEdge].weight);
 		graph.checkWeights();
 		weight.value = "";
 		weightDiv.style.display = "none";
@@ -160,7 +162,6 @@ function getWindowSize() {
 }
 
 function tabClick(event) {
-	console.log(event.target);
 	var activetab = document.querySelectorAll(".tab[active=active]");
 	var activesection = document.getElementById(activetab[0].getAttribute('section'));
 	activesection.style.display = "none";
