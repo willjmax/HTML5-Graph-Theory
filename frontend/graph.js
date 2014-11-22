@@ -2,27 +2,42 @@ function Graph() {
 	this.vertices = { };
 	this.edges = { };
 	this.weighted = false;
+    this.matrix = { };
 }
 
 Graph.prototype.addVertex = function(vertex) {
 	this.vertices[Vertex.count] = vertex;
+    this.matrix[vertex.id] = {};
 }
 
 Graph.prototype.addEdge = function(edge) {
 	this.edges[Edge.count] = edge;
+
+    var vertex1 = edge.vertex1.id;
+    var vertex2 = edge.vertex2.id;
+
+    this.matrix[vertex1][vertex2] = (this.weighted) ? 0 : 1;
+    this.matrix[vertex2][vertex1] = (this.weighted) ? 0 : 1;
 }
 
 Graph.prototype.removeVertex = function(id) {
 	for (edge in this.edges) {
 		if (this.edges[edge].vertex1 == this.vertices[id] || this.edges[edge].vertex2 == this.vertices[id]) {
-			delete this.edges[edge];
+            delete this.matrix[this.edges[edge].vertex1.id][id];
+            delete this.matrix[this.edges[edge].vertex2.id][id];
+            delete this.edges[edge];
 		}
 	}
 	delete this.vertices[id];
+    delete this.matrix[id];
 }
 
 Graph.prototype.removeEdge = function(id) {
-	delete this.edges[id];
+	var vertex1 = this.edges[id].vertex1.id;
+    var vertex2 = this.edges[id].vertex2.id;
+    delete this.edges[id];
+    delete this.matrix[vertex1][vertex2];
+    delete this.matrix[vertex2][vertex1];
 }
 
 Graph.prototype.draw = function(canvas, context) {
@@ -84,10 +99,22 @@ Graph.prototype.isEdgeClicked = function (event) {
 
 Graph.prototype.checkWeights = function() {
 	this.weighted = false;
-	for (edge in graph.edges) {
+	for (edge in this.edges) {
 		if (this.edges[edge].weight > 0) {
 			this.weighted = true;
 			break;
 		}
 	}
+}
+
+Graph.prototype.generateMatrix = function() {
+    for (vertex in this.vertices) {
+        for (edge in this.edges) {
+            if (this.edges[edge].vertex1.id == this.vertices[vertex].id) {
+                this.matrix[vertex][this.edges[edge].vertex2.id] = 1
+            } else if (this.edges[edge].vertex2.id == this.vertices[vertex].id) {
+                this.matrix[vertex][this.edges[edge].vertex1.id] = 1
+            }
+        }
+    }
 }

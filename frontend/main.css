@@ -59,6 +59,10 @@ body {
 	vertical-align: middle;
 }
 
+.tab[active="active"] {
+    background-color: #222;
+}
+
 .tab span {
 	vertical-align: middle;
 }

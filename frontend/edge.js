@@ -4,6 +4,8 @@ function Edge(obj) {
 	this.vertex2 = obj.vertex2;
 	this.id = Edge.count;
 	this.weight = 0;
+
+    this.direction;
 	
 	this.reflexive = (obj.vertex1.equals(obj.vertex2));
 	this.reflexiveCenter = {x: 0, y: 0};
@@ -18,6 +20,10 @@ function Edge(obj) {
 	
 	this.defineRect();
 	this.unrotate();
+}
+
+Edge.prototype.getCenter = function() {
+    return {x: (this.vertex1.pos.x + this.vertex2.pos.x) / 2, y: (this.vertex1.pos.y + this.vertex2.pos.y) / 2};
 }
 
 Edge.prototype.draw = function(context, canvas, weighted) {

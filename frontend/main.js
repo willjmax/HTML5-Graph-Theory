@@ -94,7 +94,7 @@ function onMouseUp(event) {
 
 function onMouseMove(event) {
 	var pos = getMousePos(event);
-	if(movingVertex) {	
+	if(movingVertex) {
 		graph.vertices[mousedownVertex.id].pos = {x: pos.x, y: pos.y };
 		graph.draw(canvas, context);
 	}
@@ -165,7 +165,6 @@ function tabClick(event) {
 	var activetab = document.querySelectorAll(".tab[active=active]");
 	var activesection = document.getElementById(activetab[0].getAttribute('section'));
 	activesection.style.display = "none";
-	console.log(activetab[0]);
 	activetab[0].removeAttribute("active");
 	
 	var section = event.target.getAttribute("section");
